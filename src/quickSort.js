@@ -1,16 +1,12 @@
-function helpers({length = 10, max = 100, min = 1}) {
-    const result = []
-    while(length--) {
-        const num = Math.floor(min + Math.random() * (max - min + 1))
-        result.push(num)
-    }
-    return result
-}
+import { intArray } from './util/helper'
 /**
  * Array.prototype.sort
  * chrome采用的是快排（QuickSort）和插入排序（InsertionSort）
  * firefox采用的是递归排序（MergeSort）
  * 快排的具体实现
+ * 1、不需要创建新的数组，仅改变原数组即可；
+ * 2、基准点，右向左找到比基准值小，左向右找到比基准值大，交换；
+ * 3、碰头，与基准值对比交换位置，分隔，递归；
  */
 function quickSort(array) {
     function recursiveFn(l, r) {
@@ -59,7 +55,7 @@ function quickSort(array) {
     recursiveFn(0, array.length - 1)
 }
 
-const array = helpers({length: 100})
+const array = intArray({length: 100})
 console.log(JSON.stringify(array))
 quickSort(array)
 console.log(array)
