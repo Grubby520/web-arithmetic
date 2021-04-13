@@ -8,26 +8,27 @@
  * 2、排序之后数据与原始数据丢失映射关系,比如分数最高的8分，对应的是e同学；
  */
 function bucketSort(arr, max) {
-    const result= [],
-          tempArr = new Array(max).fill(0); // m(桶的个数)
-    arr.forEach(item => tempArr[item] += 1) // n(需排序个数)
-    tempArr.forEach((item, index) => { // m
-        if (item) {
-            result.push(...new Array(item).fill(index)) // n(最终要push n次)
-        }
-    })
-    return result
+  const result = [],
+    tempArr = new Array(max).fill(0); // m(桶的个数)
+  arr.forEach((item) => (tempArr[item] += 1)); // n(需排序个数)
+  tempArr.forEach((item, index) => {
+    // m
+    if (item) {
+      result.push(...new Array(item).fill(index)); // n(最终要push n次)
+    }
+  });
+  return result;
 }
 
-const array = [5,3,5,2,8]
-const result = bucketSort(array, 10)
-console.log(result)
+const array = [5, 3, 5, 2, 8];
+const result = bucketSort(array, 10);
+console.log(result);
 
-// 实际场景可能是这样, 8对应的是e同学
+// 实际场景可能是这样, 8对应的是e同学,无能为力
 const arr = [
-    { name: 'a', count: 5},
-    { name: 'b', count: 3},
-    { name: 'c', count: 5},
-    { name: 'd', count: 2},
-    { name: 'e', count: 8}
-]
+  { name: "a", count: 5 },
+  { name: "b", count: 3 },
+  { name: "c", count: 5 },
+  { name: "d", count: 2 },
+  { name: "e", count: 8 },
+];
