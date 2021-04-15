@@ -1,4 +1,4 @@
-import { intArray, objArray } from "./util/helper";
+import { intArray, objArray } from "../util/helper";
 /***
  * 冒泡排序
  * n + n-1 + n-2 + ... + 3 + 2 + 1

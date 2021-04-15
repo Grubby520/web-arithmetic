@@ -1,4 +1,4 @@
-import { intArray, objArray } from "./util/helper";
+import { intArray, objArray } from "../util/helper";
 /**
  * Array.prototype.sort
  * chrome采用的是快排（QuickSort）和插入排序（InsertionSort）
