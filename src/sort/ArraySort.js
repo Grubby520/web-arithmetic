@@ -1,5 +1,5 @@
 // https://github.com/v8/v8/blob/98d735069d0937f367852ed968a33210ceb527c2/src/js/array.js#L996
-import { objArray } from ".../util/helper";
+import { objArray } from "../util/helper";
 
 function ArraySort(array, comparefn) {
   return InnerArraySort(array, array.length, comparefn);

@@ -3,7 +3,7 @@ const fs = require("fs");
 
 function entryMultiple() {
   const entry = {},
-    base = "./src/",
+    base = "./src/sort/",
     regexp = /\.js$/,
     files = fs.readdirSync(base);
   files.forEach((file) => {
@@ -22,7 +22,7 @@ module.exports = {
     return entryMultiple();
   },
   output: {
-    filename: "[name].js",
+    filename: "sort/[name].bundle.js",
     path: path.resolve(__dirname, "dist"),
   },
 };
