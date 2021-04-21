@@ -1,3 +1,8 @@
+/**插入排序
+ * 空间复杂度 O(1)
+ * 时间复杂度 O(M2+m) -> 最坏O(N2) 平均O(NlogN)
+ */
+
 import { intArray, objArray } from "../util/helper";
 
 function insertionSort(array, compareFn) {
@@ -8,6 +13,7 @@ function insertionSort(array, compareFn) {
   }
   // 第一个基准值base，从第二个值target开始
   for (let i = 1; i < array.length; i++) {
+    // m次
     /* 
     第二个值的左边是已完成排序的，从右向左遍历cur，
     1.cur>target,cur后移一位
@@ -17,6 +23,7 @@ function insertionSort(array, compareFn) {
     const target = array[i];
     let preIndex = i - 1;
     while (preIndex >= 0) {
+      // 最坏的情况- 1+2+3...+m-2+m-1 -> m2/2 -> m2
       const cur = array[preIndex];
       const order = compareFn(cur, target);
       if (order > 0) {
