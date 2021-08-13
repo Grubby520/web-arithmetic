@@ -1,6 +1,6 @@
 const path = require("path");
 const fs = require("fs");
-const folder = "vue";
+const folder = "sort";
 
 function entryMultiple() {
   const entry = {},
