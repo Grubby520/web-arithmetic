@@ -1,6 +1,0 @@
-[submodule "modules/noFrameNoteBook"]
-	path = modules/noFrameNoteBook
-	url = git@github.com:Grubby520/no-frame-notebook.git
-[submodule "modules/vueSourceCodeToLearn"]
-	path = modules/vueSourceCodeToLearn
-	url = git@github.com:Grubby520/vue-source-code-to-learn.git

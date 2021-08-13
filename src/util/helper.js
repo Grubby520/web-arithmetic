@@ -18,3 +18,4 @@ export function objArray({ length = 10, max = 100, min = 1 }) {
   }
   return result;
 }
+// data-structures-and-algorithm
