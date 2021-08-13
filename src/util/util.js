@@ -51,3 +51,53 @@ export function isPlainObject(obj) {
 export function isNative(Ctor) {
   return typeof Ctor === "function" && /native code/.test(Ctor.toString());
 }
+
+/**
+ * Quick check
+ */
+export function isObject(obj) {
+  return obj !== null && typeof obj === "object";
+}
+
+/**
+ * Check if two values are loosely equal
+ * 宽松判断是否相等
+ */
+export function looseEqual(a, b) {
+  if (a === b) return true;
+  const isObjectA = isObject(a);
+  const isObjectB = isObject(b);
+  if (isObjectA && isObjectB) {
+    // 都是对象-再细分
+    const isArrayA = Array.isArray(a);
+    const isArrayB = Array.isArray(b);
+    if (isArrayA && isArrayB) {
+      // 都是array
+      return (
+        a.length === b.length &&
+        a.every((e, i) => {
+          return looseEqual(e, b[i]); // recurse
+        })
+      );
+    } else if (!isArrayA && !isArrayB) {
+      // 都是object
+      const keysA = Object.keys(a);
+      const keysB = Object.keys(b);
+      return (
+        keysA.length === keysB.length &&
+        keysA.every((key) => {
+          return looseEqual(a[key], b[key]);
+        })
+      );
+    } else {
+      // 类型不相同（只计算了Array,null,Object。其他类型没考虑-Date,RegExp,Promise,ArrayBuffer等等）
+      return false;
+    }
+  } else if (!isObjectA && !isObjectB) {
+    // 都是基本类型
+    return String(a) === String(b); // loosely 隐式转换判断
+  } else {
+    // 对象与非对象
+    return false;
+  }
+}
