@@ -2,6 +2,7 @@
  * DFS: depth first search
  * BFS: breadth first search
  * 用途：走迷宫 。。。
+ * 1st
  */
 
 // 生成 tree 数据结构
