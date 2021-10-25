@@ -3,6 +3,7 @@
  * BFS: breadth first search
  * 用途：走迷宫 。。。
  * 1st
+ * 2nd
  */
 
 // 生成 tree 数据结构
