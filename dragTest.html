@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Document</title>
+</head>
+<style>
+	* {
+		border: none;
+		border-width: 0;
+		margin: 0;
+	}
+
+	.main {
+		padding: 15px;
+	}
+
+	.el-button {
+		display: inline-block;
+		padding: 9px;
+		padding-bottom: 7px;
+		text-align: center;
+		border: 1px solid #000;
+		border-radius: 15px;
+		cursor: pointer;
+	}
+
+	.el-button__inner {
+		position: relative;
+		border: 1px solid rgb(161, 160, 160);
+		border-radius: 5px;
+		font-weight: bolder;
+		background-image: linear-gradient(0deg, #a0a0a0, #f5f5f5);
+		box-shadow: 0 -1px 2px 6px #c0c0c0;
+	}
+
+	/* 计算： 
+		假定五角星整体高度 20
+		R = 10
+		t = R*sin18 = 3.09
+		top: 2*t = 6.18
+		left: top/tan36 = 8.51
+	*/
+	.el-star {
+		position: absolute;
+		top: 50%;
+		transform: translateY(-50%);
+		width: 0;
+		height: 0;
+		border-top-color: #777;
+		border-left-color: transparent;
+		border-right-color: transparent;
+		border-top-width: 6.18px;
+		border-left-width: 8.51px;
+		border-right-width: 8.51px;
+		border-style: solid;
+	}
+
+	.el-star__left {
+		left: 10px;
+	}
+
+	.el-star__right {
+		right: 10px;
+	}
+
+	.el-star::before {
+		border-width: 0;
+		content: '';
+		display: block;
+		width: 0;
+		height: 0;
+		border-top-color: #777;
+		border-left-color: transparent;
+		border-right-color: transparent;
+		border-top-width: 6.18px;
+		border-left-width: 8.51px;
+		border-right-width: 8.51px;
+		border-style: solid;
+
+		position: absolute;
+		top: -6.18px;
+		left: -8.51px;
+		transform: rotate(72deg);
+	}
+
+	.el-star::after {
+		border-width: 0;
+		content: '';
+		display: block;
+		width: 0;
+		height: 0;
+		border-top-color: #777;
+		border-left-color: transparent;
+		border-right-color: transparent;
+		border-top-width: 6.18px;
+		border-left-width: 8.51px;
+		border-right-width: 8.51px;
+		border-style: solid;
+		position: absolute;
+		top: -6.18px;
+		left: -8.51px;
+		transform: rotate(-72deg);
+	}
+
+	/* 
+		文字内容自适应
+		2*left + left = 2*8.51 + 10 = 27
+	*/
+	.el-button .el-text {
+		margin-left: 27px;
+		margin-right: 27px;
+		padding: 10px;
+	}
+
+	/* drag */
+	.mt-md {
+		margin-top: 15px;
+	}
+
+	.el-drag {
+		height: 400px;
+		width: 50%;
+		border: 1px solid #000;
+		position: relative;
+	}
+
+	.el-drag__area {
+		position: absolute;
+		width: 50px;
+		height: 50px;
+		border: 1px solid blue;
+		cursor: pointer;
+	}
+
+	.el-drag__corner {
+		position: absolute;
+		width: 6px;
+		height: 6px;
+		border: 1px solid green;
+		background: #fff;
+	}
+
+	.el-drag__corner--one {
+		top: -3px;
+		left: -3px;
+	}
+
+	.el-drag__corner--two {
+		top: -3px;
+		right: -3px;
+	}
+
+	.el-drag__corner--three {
+		bottom: -3px;
+		left: -3px;
+	}
+
+	.el-drag__corner--four {
+		bottom: -3px;
+		right: -3px;
+		background: red;
+	}
+</style>
+
+<body>
+	<div class="main">
+
+		<div class="el-button el-button__outer">
+			<div class="el-button__inner">
+				<div class="el-text">CHECKOUT</div>
+				<div class="el-star el-star__left"></div>
+				<div class="el-star el-star__right"></div>
+			</div>
+		</div>
+
+		<div class="el-button el-button__outer">
+			<div class="el-button__inner">
+				<div class="el-text">CHECKOUTXXX</div>
+				<div class="el-star el-star__left"></div>
+				<div class="el-star el-star__right"></div>
+			</div>
+		</div>
+
+		<div class="mt-md">
+			<div class="el-drag" id="my-drag" style="float: left;">
+				<div class="el-drag__area" id="my-drag__box" style="left: 10px; top: 10px;">
+					<div class="el-drag__corner el-drag__corner--one"></div>
+					<div class="el-drag__corner el-drag__corner--two"></div>
+					<div class="el-drag__corner el-drag__corner--three"></div>
+					<div class="el-drag__corner el-drag__corner--four"></div>
+				</div>
+			</div>
+	
+			<div class="remark-area" style="width: 49%; float: right;">
+				<p style="color: red;">说明：</p>
+				<p>请拖拽右下角红色标点，只实现了它，其他点的缩放的逻辑是一样的！</p>
+				<p>已经处理拖拽的边界，缩放的边界没处理，但是逻辑是一样的！</p>
+			</div>
+		</div>
+
+	</div>
+
+	<script>
+
+		const pxToNum = px => {
+			return Number(px.replace(/(p|x)/g, ''))
+		}
+		window.onload = function () {
+			const $drag = document.getElementById('my-drag')
+			const $box = document.getElementById('my-drag__box')
+
+			$box.addEventListener('click', function(e) {
+				console.log($box.style.width, $box.style.height)
+				$box.style.width
+			})
+
+
+			// init
+			$box.style.width = '50px'
+			$box.style.height = '50px'
+			// 常量
+			const dragLeft = $drag.offsetLeft
+			const dragTop = $drag.offsetTop
+			const dragWidth = $drag.offsetWidth
+			const dragHeight = $drag.offsetHeight
+
+			// 拖拽
+			$box.addEventListener('mousedown', function (e) {
+				const boxWidth = $box.offsetWidth
+				const boxHeight = $box.offsetHeight
+				const boxLeft = $box.offsetLeft
+				const rate = boxWidth / boxHeight // 比率
+
+				const ev = e || window.event
+				// 缩放
+				const target = ev.srcElement
+				console.log(ev.srcElement)
+
+				// 鼠标到拖拽块左边和顶部距离
+				const left = ev.clientX - dragLeft - $box.offsetLeft
+				const top = ev.clientY - dragTop - $box.offsetTop
+
+				const originLeft = pxToNum($box.style.left)
+				// console.log(originLeft)
+
+				const mousemoveFn = function (e) {
+					const ev = e || window.event
+					if (target.className.indexOf('el-drag__area') === -1) {
+						// 根据选择的位置计算变化值
+						let diffX, diffY
+						// 右下角
+						if (target.className.indexOf('four') !== -1) {
+							diffX = ev.clientX - boxWidth - boxLeft - dragLeft
+							
+						}
+						// 其他点的计算是一样的方式
+						// 左下角
+						if (target.className.indexOf('three') !== -1) {
+							diffX = boxLeft + dragLeft - ev.clientX
+							// min side effect
+							const maxOriginLeft = originLeft + boxWidth
+							let curLeft = originLeft - diffX
+							if (curLeft >= maxOriginLeft) curLeft = maxOriginLeft
+							$box.style.left = curLeft + 'px'
+						}
+
+						// 右上角
+						if (target.className.indexOf('two') !== -1) {
+
+						}
+
+						diffY = diffX / rate
+						$box.style.width = boxWidth + diffX + 'px'
+						$box.style.height = boxWidth + diffY + 'px'
+						return
+					}
+					// console.log(ev.clientX)
+					// console.log($box.style.left)
+					// console.log($box.style.top)
+					// console.log(ev.clientX - left - dragLeft, ev.clientY - top - dragTop)
+					// 计算
+					let newLeft = ev.clientX - left - dragLeft
+					let newTop = ev.clientY - top - dragTop
+					// 边界处理
+					const maxLeft = dragWidth - boxWidth
+					const maxTop = dragHeight - boxHeight
+
+					if (newLeft <= 0) newLeft = 0
+					if (newTop <= 0) newTop = 0
+					if (newLeft >= maxLeft) newLeft = maxLeft
+					if (newTop >= maxTop) newTop = maxTop
+
+					// 设置拖拽块的 left 和 top
+					$box.style.left = newLeft + 'px'
+					$box.style.top = newTop + 'px'
+				}
+
+				document.addEventListener('mousemove', mousemoveFn)
+
+				$box.addEventListener('mouseup', function () {
+					document.removeEventListener('mousemove', mousemoveFn)
+				})
+
+				// 根据需求，看要不要加控制
+				$drag.addEventListener('mouseleave', function () {
+					// console.log('leave')
+					document.removeEventListener('mousemove', mousemoveFn)
+				})
+			})
+
+
+		}
+	</script>
+</body>
+
+</html>
