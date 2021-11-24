@@ -1,11 +1,17 @@
 const path = require("path");
 const fs = require("fs");
-const folder = "sort";
+const folders = {
+  sort: 'sort',
+  base: 'base',
+  antv: 'antv'
+}
+
+const folder = folders.base;
 
 function entryMultiple() {
   const entry = {},
     base = `./src/${folder}/`,
-    regexp = /\.js$/,
+    regexp = /\.(js|ts)$/,
     files = fs.readdirSync(base);
   files.forEach((file) => {
     if (regexp.test(file)) {
@@ -26,4 +32,12 @@ module.exports = {
     filename: `${folder}/[name].bundle.js`,
     path: path.resolve(__dirname, "dist"),
   },
+  module: {
+    rules: [
+      {
+        test: /\.tsx?$/,
+        loader: 'ts-loader'
+      }
+    ]
+  }
 };
