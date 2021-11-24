@@ -197,7 +197,7 @@
 	
 			<div class="remark-area" style="width: 49%; float: right;">
 				<p style="color: red;">说明：</p>
-				<p>请拖拽右下角红色标点，只实现了它，其他点的缩放的逻辑是一样的！</p>
+				<!-- <p>请拖拽右下角红色标点，只实现了它，其他点的缩放的逻辑是一样的！</p> -->
 				<p>已经处理拖拽的边界，缩放的边界没处理，但是逻辑是一样的！</p>
 			</div>
 		</div>
@@ -213,11 +213,10 @@
 			const $drag = document.getElementById('my-drag')
 			const $box = document.getElementById('my-drag__box')
 
-			$box.addEventListener('click', function(e) {
-				console.log($box.style.width, $box.style.height)
-				$box.style.width
-			})
-
+			// $box.addEventListener('click', function(e) {
+			// 	console.log($box.style.width, $box.style.height)
+			// 	$box.style.width
+			// })
 
 			// init
 			$box.style.width = '50px'
@@ -238,14 +237,14 @@
 				const ev = e || window.event
 				// 缩放
 				const target = ev.srcElement
-				console.log(ev.srcElement)
+				// console.log(ev.srcElement)
 
 				// 鼠标到拖拽块左边和顶部距离
 				const left = ev.clientX - dragLeft - $box.offsetLeft
 				const top = ev.clientY - dragTop - $box.offsetTop
 
 				const originLeft = pxToNum($box.style.left)
-				// console.log(originLeft)
+        const originTop = pxToNum($box.style.top)
 
 				const mousemoveFn = function (e) {
 					const ev = e || window.event
@@ -261,7 +260,7 @@
 						// 左下角
 						if (target.className.indexOf('three') !== -1) {
 							diffX = boxLeft + dragLeft - ev.clientX
-							// min side effect
+							// min left side effect
 							const maxOriginLeft = originLeft + boxWidth
 							let curLeft = originLeft - diffX
 							if (curLeft >= maxOriginLeft) curLeft = maxOriginLeft
@@ -270,7 +269,29 @@
 
 						// 右上角
 						if (target.className.indexOf('two') !== -1) {
+              diffX = ev.clientX - boxWidth - boxLeft - dragLeft // 与右下角一样
+              // max top side effect
+              const maxOriginTop = originTop + boxHeight
+              diffY = diffX / rate
+              let curTop = originTop - diffY
+              if (curTop >= maxOriginTop) curTop = maxOriginTop
+              $box.style.top = curTop + 'px'
+						}
 
+            // 左上角
+            if (target.className.indexOf('one') !== -1) {
+							diffX = boxLeft + dragLeft - ev.clientX
+							// min left side effect
+							const maxOriginLeft = originLeft + boxWidth
+							let curLeft = originLeft - diffX
+							if (curLeft >= maxOriginLeft) curLeft = maxOriginLeft
+							$box.style.left = curLeft + 'px'
+              // max top side effect
+              const maxOriginTop = originTop + boxHeight
+              diffY = diffX / rate
+              let curTop = originTop - diffY
+              if (curTop >= maxOriginTop) curTop = maxOriginTop
+              $box.style.top = curTop + 'px'
 						}
 
 						diffY = diffX / rate
