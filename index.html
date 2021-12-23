@@ -1,11 +1,31 @@
+<!--
+ * @Author: liangliang jiang
+ * @Date: 2021-08-13 17:54:10
+ * @LastEditors: liangliang jiang
+ * @LastEditTime: 2021-12-22 17:46:41
+ * @Description: file content
+-->
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+    <style>
+        /* .g-loading {
+            position: absolute;
+            left: 0;
+            right: 0;
+            top: 0;
+            bottom: 0;
+            background: url(./asset/bg.jpg);
+            opacity: 0.85;
+        } */
+    </style>
 </head>
+
 <body>
     <p>
         <button id="debounce">debounce</button>
@@ -15,10 +35,179 @@
     <p>
         <button id="other">click other</button>
     </p>
+    <!-- <div class="g-loading">
+
+    </div> -->
     <!-- <script src="./dist/sort/ArraySort.bundle.js"></script> -->
     <!-- <script src="./src/traverse/DFS vs BFS.js"></script> -->
     <!-- <script src="./src/arithmetic/两数之和.js"></script> -->
     <!-- <script src="./dist/base/debounce.bundle.js"></script> -->
-    <script src="./dist/base/lodash.bundle.js"></script>
+    <!-- <script src="./dist/base/lodash.bundle.js"></script> -->
+    <script>
+        const arr = [{ a: 1 }, { a: 2 }]
+        const result = arr.find(item => item.a === 3)
+        const result1 = arr.find(item => item.a === 2)
+        // console.log(result)
+        // console.log(result1)
+
+        // for跳出当前循环
+        function testFor() {
+            const arr = [1, 2, 3]
+            let flag = true
+            for (let index = 0; index < arr.length; index++) {
+                const element = arr[index];
+                console.log(element)
+                if (element === 4) {
+                    flag = false
+                    break
+                }
+            }
+            console.log(flag)
+            return flag
+        }
+
+        // console.log(testFor())
+
+        let obj = { a: 1, b: 2 }
+
+        const arr1 = []
+        arr1.push({
+            ...obj,
+            a: 11
+        })
+        obj.a = 'a'
+        // console.log(arr1)
+
+        // 比较2个数组相等
+        apiFields = [{ id: '1400015494362234880' }, { id: '1400015444362234880' }, { id: '1400015404362234880' }]
+        a = apiFields.map(field => field.id).sort()
+
+        apiFieldsOld = [{ id: '1400015444362234880' }, { id: '1400015494362234880' }, { id: '1400015404362234880' }]
+        b = apiFieldsOld.map(field => field.id).sort()
+        // console.log(JSON.stringify(a) === JSON.stringify(b))
+
+        // 解构，浅拷贝
+        {
+            // const obj2 = {obj : [{name: 2}]}
+            // const { obj } = obj2
+            // obj.push({name: 3})
+            // console.log(obj2)
+
+            // const obj2 = {}
+            // const { obj = [] } = obj2
+            // obj.push({name: 3})
+            // console.log(obj2)
+
+
+            // ... 浅拷贝
+            const obj3 = { id: 1 }
+            const copyObj3 = {
+                ...obj3
+            }
+
+            copyObj3.id = 22
+            // console.log(obj3)
+
+            // 一层浅拷贝,没有影响，不会相互影响。
+
+            // const arr4 = [1,2,3]
+            // const index = arr4.findIndex(a => a === 2)
+            // console.log(index)
+            // arr4.splice(index, 1)
+            // console.log(arr4)
+
+            // 上下移动
+
+            // splice 起始位置下标是怎么计算的？
+            // arr3.splice(1, 0, 'a')
+
+            // console.log(arr3)
+
+            function moveUpTest(index) {
+                const arr3 = [0, 1, 2, 3]
+                if (index === 0) {
+                    return
+                }
+                const self = arr3.splice(index - 1, 1)[0]
+                arr3.splice(index, 0, self)
+                console.log(arr3)
+            }
+
+            function moveDownTest(index) {
+                const arr3 = [0, 1, 2, 3]
+                if (index === arr3.length - 1) {
+                    return
+                }
+                const self = arr3.splice(index + 1, 1)[0]
+                arr3.splice(index, 0, self)
+                console.log(arr3)
+            }
+
+            function moveUp(index) {
+                if (index === 0) {
+                    return
+                }
+                const self = arr3.splice(index - 1, 1)[0]
+                arr3.splice(index, 0, self)
+            }
+
+            function moveDown(index) {
+                if (index === arr3.length - 1) {
+                    return
+                }
+                const self = arr3.splice(index + 1, 1)[0]
+                arr3.splice(index, 0, self)
+            }
+
+            // moveUp(0)
+            // moveUp(1)
+            // moveUp(2)
+            // moveUp(3)
+
+            // moveDownTest(0)
+            // moveDownTest(1)
+            // moveDownTest(2)
+            // moveDownTest(3)
+
+            // forEach 终止当次循环
+            // let arr5 = [1,2,3]
+            // arr5.forEach(item => {
+            //     console.log(item)
+            //     if (item === 2) {
+            //         return
+            //     }
+            //     console.log('item')
+            // })
+
+            // watch 需要 async,await,拿到所有数据之后，再遍历table，给每个row动态添加一个属性
+
+        }
+
+        {
+            const outer = document.createElement('div');
+            outer.className = 'el-scrollbar__wrap';
+            outer.style.overflow = 'scroll';
+            outer.style.visibility = 'hidden';
+            outer.style.width = '100px';
+            outer.style.height = '100%';
+            outer.style.position = 'absolute';
+            outer.style.top = '-9999px';
+            document.body.appendChild(outer);
+
+            const widthNoScroll = outer.offsetWidth;
+            console.log(widthNoScroll)
+
+            const inner = document.createElement('div');
+            inner.style.width = '100%';
+            outer.appendChild(inner);
+
+            const widthWithScroll = inner.offsetWidth;
+            console.log(widthWithScroll)
+            outer.parentNode.removeChild(outer);
+            scrollBarWidth = widthNoScroll - widthWithScroll;
+        }
+
+    </script>
 </body>
+
 </html>
